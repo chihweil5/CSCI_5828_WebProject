@@ -1,0 +1,56 @@
+body{
+    padding-left: 15px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    background-color: #ECECEA;
+    color: black;
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+}
+
+a:link {
+  color: #D9853B;
+}
+
+a:hover {
+  color: #D9853B;
+}
+
+a:active, a:visited{
+  color: #D9853B;
+}
+
+.page-header {
+    background-color: #74AFAD;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+a.title {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    line-height: 1.25;
+    font-size: 40px;
+    font-weight: bold;
+    color: #ECECEA;
+}
+
+a.top-menu {
+    line-height: 1.25;
+    font-size: 28px;
+    font-weight: bold;
+    color: #D9853B;
+}
+
+.post {
+    margin: 20px 0px 10px 0px;;
+}
+
+hr.divider {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}

@@ -18,7 +18,7 @@ $ source <virtualenv_name>/bin/activate
 
 3. Install Django using pip
 ```
-(myvenv) ~$ pip install django~=1.11.0
+(myvenv) ~$ pip3 install django~=1.11.0
 ```
 
 ### Build database

@@ -32,7 +32,8 @@ def login_form(request):
         if form.is_valid():
             user = form.get_user()
             login(request,user)
-            return redirect('/website/profile/')
+            #return redirect('/website/profile/')
+            return redirect('/profile/')
     else:
         form = AuthenticationForm()
     return render(request,'login_form.html',{'form':form})
@@ -47,7 +48,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('home')
+            return redirect('home.html')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})

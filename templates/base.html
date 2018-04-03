@@ -11,18 +11,11 @@
             <h1><a href="/" class="title">EzCOOK17</a></h1>
         </div>
         <div class="content container">
-            <div>
-                <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-                <a href="login" class="top-menu"><button type="button" class="btn btn-primary">Login</button></a>
-                <a href="signup" class="top-menu"><button type="button" class="btn btn-primary">Sign up</button></a>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    {% block content %}
-
-                    {% endblock %}
-                </div>
-            </div>
+        <div>
+            <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            {% block content %}
+ 
+            {% endblock %}
         </div>
     </body>
 </html>

@@ -38,7 +38,5 @@ $ python3 manage.py runserver
 ```
 
 ### The public link for this website
-https://azurisky.pythonanywhere.com
-
-
+http://ec2-18-219-216-0.us-east-2.compute.amazonaws.com:8080/
 You can create new recipe and edit them later, and our pivotal tracker link is [this](https://www.pivotaltracker.com/n/projects/2156952).

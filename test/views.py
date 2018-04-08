@@ -58,6 +58,15 @@ def post_list(request):
     posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'post_list.html', {'posts': posts})
 
+def post_list_without_edit(request):
+    posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'post_list_without_edit.html', {'posts': posts})
+
+def post_detail_without_edit(request, pk):
+    post = get_object_or_404(PostNew, pk=pk)
+    return render(request, 'post_detail_without_edit.html', {'post': post})
+
+
 def post_detail(request, pk):
     post = get_object_or_404(PostNew, pk=pk)
     return render(request, 'post_detail.html', {'post': post})

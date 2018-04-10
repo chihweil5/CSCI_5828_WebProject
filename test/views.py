@@ -20,12 +20,6 @@ def home(request):
         'post_list': post_list,
     })
 
-
-def hello_world(request):
-    return render(request, 'hello_world.html', {
-        'current_time': str(datetime.now()),
-    })
-
 def login_form(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -97,5 +91,3 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'post_edit.html', {'form': form})
-
-

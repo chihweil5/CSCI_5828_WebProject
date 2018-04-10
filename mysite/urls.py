@@ -16,16 +16,11 @@ Including another URLconf
 from django.conf.urls import include
 from django.conf.urls import url
 from django.contrib import admin
-from test.views import hello_world, home, post_new
+from test.views import post_new
 from django.contrib.auth import views as auth_views
-#from mysite.core import views as core_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^hello/$', hello_world),
-    # url(r'^$', home),
     url(r'^post/new/$', post_new),
-    url(r'', include('test.urls')),
-
-
+    url(r'', include('test.urls'))
 ]

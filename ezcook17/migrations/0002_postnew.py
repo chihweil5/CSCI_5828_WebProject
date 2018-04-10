@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('test', '0001_initial'),
+        ('ezcook17', '0001_initial'),
     ]
 
     operations = [

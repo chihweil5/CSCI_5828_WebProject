@@ -8,22 +8,20 @@
     </head>
     <body>
         <div class="page-header">
-            <h1><a href="/" class="title">EzCOOK17</a></h1>
+            <h1 class="header">EzCOOK17</h1>
         </div>
         <div class="content container">
             <div>
                 {% if request.user.is_authenticated %}
-                    Hi, {{request.user}} 
+                    Hi, {{request.user}}
                     <a href="/logout/" class="top-menu"><button type="button" class="btn btn-primary pull-right"  style="margin-right:10px">Logout</button></a>
                 {% else %}
-                    <a href="{% url 'login_form' %}" class="top-menu"><button type="button" class="btn btn-primary pull-right"  style="margin-right:10px">Login</button></a>
-                    <a href="{% url 'signup' %}" class="top-menu"><button type="button" class="btn btn-primary pull-right" style="margin-right:10px">Sign up</button></a>
+                    {% block content %}
+
+                    {% endblock %}
                 {% endif %}
             </div>
-                {% block content %}
 
-
-                {% endblock %}
         </div>
     </body>
 </html>

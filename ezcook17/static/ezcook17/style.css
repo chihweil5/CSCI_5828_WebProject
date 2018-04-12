@@ -5,10 +5,24 @@ body{
     color: black;
 }
 
-h1 {
+/* h1 {
     font-size: 40px;
     font-weight: bold;
     color: black;
+} */
+
+h1.header {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    color: #ECECEA;
+    /* text-shadow: 1px 1px 2px #000000; */
+}
+
+.page-header {
+    background-color: #74AFAD;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
 }
 
 a:link {
@@ -21,12 +35,6 @@ a:hover {
 
 a:active, a:visited{
   color: #D9853B;
-}
-
-.page-header {
-    background-color: #74AFAD;
-    margin-top: 0;
-    padding: 20px 20px 20px 40px;
 }
 
 a.title {
@@ -53,4 +61,8 @@ hr.divider {
     height: 1px;
     background: #333;
     background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+button.margin {
+    margin: 10px;
 }

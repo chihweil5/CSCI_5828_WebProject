@@ -7,11 +7,11 @@ from django.utils import timezone
 from django.shortcuts import redirect
 
 #Adding by Yi
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.template import RequestContext
-from django.contrib.auth.views import login
+from django.contrib.auth.views import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 
 def home(request):
@@ -26,6 +26,7 @@ def login_form(request):
         if form.is_valid():
             user = form.get_user()
             login(request,user)
+            # auth.login(request, user)
             #return redirect('/website/profile/')
             return redirect('post_list')
     else:
@@ -42,10 +43,16 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+            # auth.login(request, user)
             return redirect('post_list')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
+
+def logout_form(request):
+    logout(request)
+    posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'post_list_without_edit.html', {'posts': posts})
 
 
 def post_list(request):

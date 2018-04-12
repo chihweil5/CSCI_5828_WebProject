@@ -2,9 +2,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <a href="{% url 'login_form' %}" class="top-menu"><button type="button" class="btn btn-primary pull-right"  style="margin-right:10px">Login</button></a>
-    <a href="{% url 'signup' %}" class="top-menu"><button type="button" class="btn btn-primary pull-right" style="margin-right:10px">Sign up</button></a>
-</div>
+    <!-- {% if request.user.is_authenticated %}
+        Hi, {{request.user}} 
+        <a href="/logout/" class="top-menu"><button type="button" class="btn btn-primary pull-right"  style="margin-right:10px">Logout</button></a>
+    {% else %}
+        <a href="{% url 'login_form' %}" class="top-menu"><button type="button" class="btn btn-primary pull-right"  style="margin-right:10px">Login</button></a>
+        <a href="{% url 'signup' %}" class="top-menu"><button type="button" class="btn btn-primary pull-right" style="margin-right:10px">Sign up</button></a>
+    {% endif %}
+</div> -->
 <div class="row">
     <div class="col-md-8">
 
@@ -19,4 +24,5 @@
             <hr class="divider" />
         </div>
     {% endfor %}
+</div>
 {% endblock %}

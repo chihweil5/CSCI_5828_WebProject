@@ -11,11 +11,19 @@
             <h1><a href="/" class="title">EzCOOK17</a></h1>
         </div>
         <div class="content container">
-        <div>
-            {% block content %}
+            <div>
+                {% if request.user.is_authenticated %}
+                    Hi, {{request.user}} 
+                    <a href="/logout/" class="top-menu"><button type="button" class="btn btn-primary pull-right"  style="margin-right:10px">Logout</button></a>
+                {% else %}
+                    <a href="{% url 'login_form' %}" class="top-menu"><button type="button" class="btn btn-primary pull-right"  style="margin-right:10px">Login</button></a>
+                    <a href="{% url 'signup' %}" class="top-menu"><button type="button" class="btn btn-primary pull-right" style="margin-right:10px">Sign up</button></a>
+                {% endif %}
+            </div>
+                {% block content %}
 
 
-            {% endblock %}
+                {% endblock %}
         </div>
     </body>
 </html>

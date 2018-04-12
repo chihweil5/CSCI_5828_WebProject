@@ -5,6 +5,7 @@ from .models import Post, PostNew
 from .forms import PostForm
 from django.utils import timezone
 from django.shortcuts import redirect
+from cassandra.cluster import Cluster
 
 #Adding by Yi
 from django.contrib.auth import login, authenticate, logout
@@ -80,10 +81,13 @@ def post_new(request):
             #post.author = request.user
             post.published_date = timezone.now()
             post.save()
+            cluster = Cluster(['172.31.32.130'])
+            session = cluster.connect()
+            session.execute("INSERT INTO ezcook17.recipe (content, owner, title) VALUES (post.text, request.user, post.title)")
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()
-    return render(request, 'post_edit.html', {'form': form})
+    return render(request, 'post_new.html', {'form': form})
 
 def post_edit(request, pk):
     post = get_object_or_404(PostNew, pk=pk)

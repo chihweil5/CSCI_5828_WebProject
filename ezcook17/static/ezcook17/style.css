@@ -1,5 +1,4 @@
 body{
-    padding-left: 15px;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     background-color: #ECECEA;
     color: black;
@@ -65,4 +64,17 @@ hr.divider {
 
 button.margin {
     margin: 10px;
+}
+
+nav.bg {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    background-color: #74AFAD;
+}
+
+a.header {
+    color: #ECECEA;
+}
+
+.container {
+    padding: 20px
 }

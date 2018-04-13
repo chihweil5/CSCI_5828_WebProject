@@ -13,15 +13,15 @@ from django.utils import timezone
 #     owner = colums.Text(required=False)
 #     content = columns.Text(required=False)
 
-# class Post(models.Model):
-#     title = models.CharField(max_length=100)
-#     content = models.TextField(blank=True)
-#     photo = models.URLField(blank=True)
-#     location = models.CharField(max_length=100)
-#     created_at = models.DateTimeField(auto_now_add=True)
+class Post(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField(blank=True)
+    photo = models.URLField(blank=True)
+    location = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-#     def __str__(self):
-#         return self.title
+    def __str__(self):
+        return self.title
 
 
 class PostNew(models.Model):

@@ -83,7 +83,9 @@ def post_new(request):
             post.save()
             cluster = Cluster(['127.0.0.1'])
             session = cluster.connect()
-            session.execute("INSERT INTO ezcook17.recipe (id, content, owner, title) VALUES (now(), post.text, request.user, post.title)")
+            print("INSERT INTO ezcook17.recipe (id, content, owner, title) VALUES (now(),'"+str(post.text)+"', '"+str(request.user)+"', '"+str(post.title)+"');")
+            session.execute("INSERT INTO ezcook17.recipe (id, content, owner, title) VALUES (now(),'"+str(post.text)+"', '"+str(request.user)+"', '"+str(post.title)+"');")
+            # session.execute("INSERT INTO ezcook17.recipe (id, content, owner, title) VALUES (now(),"+str(post.text)+", "+str(request.user)+", "+str(post.title)+");")
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()

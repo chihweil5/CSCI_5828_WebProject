@@ -81,9 +81,9 @@ def post_new(request):
             #post.author = request.user
             post.published_date = timezone.now()
             post.save()
-            cluster = Cluster(['172.31.32.130'])
+            cluster = Cluster(['127.0.0.1'])
             session = cluster.connect()
-            session.execute("INSERT INTO ezcook17.recipe (content, owner, title) VALUES (post.text, request.user, post.title)")
+            session.execute("INSERT INTO ezcook17.recipe (id, content, owner, title) VALUES (now(), post.text, request.user, post.title)")
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()

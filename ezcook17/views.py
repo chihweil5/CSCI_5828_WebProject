@@ -68,10 +68,25 @@ def post_detail_without_edit(request, pk):
     post = get_object_or_404(PostNew, pk=pk)
     return render(request, 'post_detail_without_edit.html', {'post': post})
 
+# def post_detail(request, id):
+#     # post = get_object_or_404(PostNew, pk=pk)
+#     cluster = Cluster(['127.0.0.1'])
+#     session = cluster.connect()
+#     print("SELECT * FROM ezcook17.recipe  WHERE id = '"+str(id)+"' ALLOW FILTERING;")
+#     post = session.execute("SELECT * FROM ezcook17.recipe  WHERE id = '"+str(id)+"' ALLOW FILTERING;")
+#     return render(request, 'post_detail.html', {'post': post})
 
 def post_detail(request, pk):
     post = get_object_or_404(PostNew, pk=pk)
     return render(request, 'post_detail.html', {'post': post})
+
+# def post_list(request):
+#     # posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+#     cluster = Cluster(['127.0.0.1'])
+#     session = cluster.connect()
+#     print("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' order by id ALLOW FILTERING;")
+#     posts = session.execute("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' ALLOW FILTERING;")
+#     return render(request, 'post_list.html', {'posts': posts})
 
 def post_new(request):
     if request.method == "POST":
@@ -83,8 +98,8 @@ def post_new(request):
             post.save()
             cluster = Cluster(['127.0.0.1'])
             session = cluster.connect()
-            print("INSERT INTO ezcook17.recipe (id, content, owner, title) VALUES (now(),'"+str(post.text)+"', '"+str(request.user)+"', '"+str(post.title)+"');")
-            session.execute("INSERT INTO ezcook17.recipe (id, content, owner, title) VALUES (now(),'"+str(post.text)+"', '"+str(request.user)+"', '"+str(post.title)+"');")
+            print("INSERT INTO ezcook17.recipe (id, content, owner, post_time, title) VALUES (now(),'"+str(post.text)+"', '"+str(request.user)+"', '"+str(time.time())+"', '"+str(post.title)+"');")
+            session.execute("INSERT INTO ezcook17.recipe (id, content, owner, post_time, title) VALUES (now(),'"+str(post.text)+"', '"+str(request.user)+"', toTimestamp(now()), '"+str(post.title)+"');")
             # session.execute("INSERT INTO ezcook17.recipe (id, content, owner, title) VALUES (now(),"+str(post.text)+", "+str(request.user)+", "+str(post.title)+");")
             return redirect('post_detail', pk=post.pk)
     else:

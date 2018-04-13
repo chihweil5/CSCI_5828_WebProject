@@ -27,9 +27,24 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
             </form>
-            <div class="my-2 ml-4">
+            {% if request.user.is_authenticated %}
+                <div class="my-2 ml-4">
+                    Hi, {{request.user}}
+                </div>
+                <div class="my-2 ml-4">
+                    <a href="/logout/" class="top-menu"><button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Log out</button></a>
+                </div>
+            {% else %}
+                <div class="my-2 ml-4">
+                    <a href="{% url 'login_form' %}" class="top-menu"><button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Log In</button></a>
+                </div>
+                <div class="my-2 ml-4">
+                    <a href="{% url 'signup' %}" class="top-menu"><button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Sign Up</button></a>
+                </div>
+            {% endif %}
+            <!-- <div class="my-2 ml-4">
                 <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Log out</button>
-            </div>
+            </div> -->
         </div>
     </nav>
     <div class="container-fluid">

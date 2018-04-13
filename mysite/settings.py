@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ezcook17',
-    'django_cassandra_engine',
 ]
 
 MIDDLEWARE = [

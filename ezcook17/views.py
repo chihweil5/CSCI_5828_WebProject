@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.shortcuts import redirect
 from cassandra.cluster import Cluster
 from cassandra.query import dict_factory
+import time
 
 #Adding by Yi
 from django.contrib.auth import login, authenticate, logout
@@ -28,7 +29,6 @@ def login_form(request):
         if form.is_valid():
             user = form.get_user()
             login(request,user)
-            # auth.login(request, user)
             #return redirect('/website/profile/')
             return redirect('post_list')
     else:
@@ -45,7 +45,6 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            # auth.login(request, user)
             return redirect('post_list')
     else:
         form = UserCreationForm()
@@ -69,13 +68,18 @@ def post_detail_without_edit(request, pk):
     post = get_object_or_404(PostNew, pk=pk)
     return render(request, 'post_detail_without_edit.html', {'post': post})
 
-def post_detail(request, id):
+def post_detail(request, pk):
     # post = get_object_or_404(PostNew, pk=pk)
     cluster = Cluster(['127.0.0.1'])
     session = cluster.connect()
-    print("SELECT * FROM ezcook17.recipe  WHERE id = '"+str(id)+"' ALLOW FILTERING;")
-    post = session.execute("SELECT * FROM ezcook17.recipe  WHERE id = '"+str(id)+"' ALLOW FILTERING;")
-    return render(request, 'post_detail.html', {'post': post})
+    sql = "SELECT * FROM ezcook17.recipe WHERE pk = {} ALLOW FILTERING;".format(str(pk))
+    print(sql)
+    post = session.execute(sql)
+    print(post[0])
+    for i in post:
+        print('here')
+        print(i.pk)
+    return render(request, 'post_detail.html', {'post': post[0]})
 
 # def post_detail(request, pk):
 #     post = get_object_or_404(PostNew, pk=pk)
@@ -86,12 +90,12 @@ def post_list(request):
     cluster = Cluster(['127.0.0.1'])
     session = cluster.connect()
     print("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' order by id ALLOW FILTERING;")
-    session.row_factory = dict_factory
+    # session.row_factory = dict_factory
     posts = session.execute("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' ALLOW FILTERING;")
-    print(posts[0]['id'])
-    for i in posts:
-        i['Sid'] = str(i['id'])
-    print(posts[0]['Sid'])
+    # print(posts[0]['id'])
+    # for i in posts:
+    #     i['Sid'] = str(i['id'])
+    # print(posts[0]['Sid'])
     return render(request, 'post_list.html', {'posts': posts})
 
 def post_new(request):
@@ -99,13 +103,13 @@ def post_new(request):
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            #post.author = request.user
-            post.published_date = timezone.now()
+            # post.author = request.user
+            # post.published_date = timezone.now()
             post.save()
             cluster = Cluster(['127.0.0.1'])
             session = cluster.connect()
-            print("INSERT INTO ezcook17.recipe (id, content, owner, post_time, title) VALUES (now(),'"+str(post.text)+"', '"+str(request.user)+"', '"+str(time.time())+"', '"+str(post.title)+"');")
-            session.execute("INSERT INTO ezcook17.recipe (id, content, owner, post_time, title) VALUES (now(),'"+str(post.text)+"', '"+str(request.user)+"', toTimestamp(now()), '"+str(post.title)+"');")
+            print("INSERT INTO ezcook17.recipe (id, pk,  content, owner, post_time, title) VALUES (now(), "+str(post.pk)+", '"+str(post.text)+"', '"+str(request.user)+"', '"+str(time.time())+"', '"+str(post.title)+"');")
+            session.execute("INSERT INTO ezcook17.recipe (id, pk, content, owner, post_time, title) VALUES (now(), "+str(post.pk)+", '"+str(post.text)+"', '"+str(request.user)+"', toTimestamp(now()), '"+str(post.title)+"');")
             # session.execute("INSERT INTO ezcook17.recipe (id, content, owner, title) VALUES (now(),"+str(post.text)+", "+str(request.user)+", "+str(post.title)+");")
             return redirect('post_detail', pk=post.pk)
     else:
@@ -113,7 +117,13 @@ def post_new(request):
     return render(request, 'post_new.html', {'form': form})
 
 def post_edit(request, pk):
+    print("here")
+    print(pk)
     post = get_object_or_404(PostNew, pk=pk)
+    cluster = Cluster(['127.0.0.1'])
+    session = cluster.connect()
+    print("SELECT * FROM ezcook17.recipe  WHERE pk = "+str(pk)+" ALLOW FILTERING;")
+    Cpost = session.execute("SELECT * FROM ezcook17.recipe  WHERE pk = "+str(pk)+" ALLOW FILTERING;")
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():

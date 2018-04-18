@@ -4,9 +4,8 @@
 <head>
     <title>EzCOOK17</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="{% static 'ezcook17/fontawesome-all.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'ezcook17/style.css' %}" />
+    <link rel="sylesheet" href="https://raw.githubusercontent.com/frexy/svg-icon-webcomponent/master/build/iconwc.js">
+    <link rel="stylesheet" type="text/css" href="{% static 'ezcook17/style.css' %}" >
 </head>
 
 <body>
@@ -17,12 +16,14 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">HOME</a>
                 </li>
+		{% if request.user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="/post">My Recipe</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/">My Stock</a>
                 </li>
+		{% endif %}
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

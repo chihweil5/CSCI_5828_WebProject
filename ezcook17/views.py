@@ -29,7 +29,6 @@ def login_form(request):
         if form.is_valid():
             user = form.get_user()
             login(request,user)
-            #return redirect('/website/profile/')
             return redirect('post_list')
     else:
         form = AuthenticationForm()
@@ -52,21 +51,30 @@ def signup(request):
 
 def logout_form(request):
     logout(request)
-    posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'post_list_without_edit.html', {'posts': posts})
-
+    # posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return redirect('post_list_without_edit')
 
 # def post_list(request):
 #     posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
 #     return render(request, 'post_list.html', {'posts': posts})
 
 def post_list_without_edit(request):
-    posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    # posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    cluster = Cluster(['127.0.0.1'])
+    session = cluster.connect()
+    sql = "SELECT * FROM ezcook17.recipe ALLOW FILTERING;"
+    print(sql)
+    posts = session.execute(sql)
     return render(request, 'post_list_without_edit.html', {'posts': posts})
 
 def post_detail_without_edit(request, pk):
-    post = get_object_or_404(PostNew, pk=pk)
-    return render(request, 'post_detail_without_edit.html', {'post': post})
+    # post = get_object_or_404(PostNew, pk=pk)
+    cluster = Cluster(['127.0.0.1'])
+    session = cluster.connect()
+    sql = "SELECT * FROM ezcook17.recipe WHERE pk = {} ALLOW FILTERING;".format(str(pk))
+    print(sql)
+    post = session.execute(sql)
+    return render(request, 'post_detail_without_edit.html', {'post': post[0]})
 
 def post_detail(request, pk):
     # post = get_object_or_404(PostNew, pk=pk)
@@ -75,10 +83,6 @@ def post_detail(request, pk):
     sql = "SELECT * FROM ezcook17.recipe WHERE pk = {} ALLOW FILTERING;".format(str(pk))
     print(sql)
     post = session.execute(sql)
-    print(post[0])
-    for i in post:
-        print('here')
-        print(i.pk)
     return render(request, 'post_detail.html', {'post': post[0]})
 
 # def post_detail(request, pk):
@@ -89,13 +93,9 @@ def post_list(request):
     # posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     cluster = Cluster(['127.0.0.1'])
     session = cluster.connect()
-    print("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' order by id ALLOW FILTERING;")
-    # session.row_factory = dict_factory
-    posts = session.execute("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' ALLOW FILTERING;")
-    # print(posts[0]['id'])
-    # for i in posts:
-    #     i['Sid'] = str(i['id'])
-    # print(posts[0]['Sid'])
+    sql = "SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' ALLOW FILTERING;"
+    print(sql)
+    posts = session.execute(sql)
     return render(request, 'post_list.html', {'posts': posts})
 
 def post_new(request):
@@ -122,15 +122,21 @@ def post_edit(request, pk):
     post = get_object_or_404(PostNew, pk=pk)
     cluster = Cluster(['127.0.0.1'])
     session = cluster.connect()
-    print("SELECT * FROM ezcook17.recipe  WHERE pk = "+str(pk)+" ALLOW FILTERING;")
-    Cpost = session.execute("SELECT * FROM ezcook17.recipe  WHERE pk = "+str(pk)+" ALLOW FILTERING;")
+    sql = "SELECT id FROM ezcook17.recipe  WHERE pk = "+str(pk)+" ALLOW FILTERING;"
+    print(sql)
+    Cpost = session.execute(sql)
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
-            #post.author = request.user
-            post.published_date = timezone.now()
+            # post.author = request.user
+            # post.published_date = timezone.now()
             post.save()
+            cluster = Cluster(['127.0.0.1'])
+            session = cluster.connect()
+            sql = "update ezcook17.recipe set content = '{}', title = '{}' where pk = {} and id = {}".format(post.text, post.title, post.pk, Cpost[0].id)
+            print(sql)
+            Cpost = session.execute(sql)
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)

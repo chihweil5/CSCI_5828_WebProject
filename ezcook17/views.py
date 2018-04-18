@@ -6,6 +6,7 @@ from .forms import PostForm
 from django.utils import timezone
 from django.shortcuts import redirect
 from cassandra.cluster import Cluster
+from cassandra.query import dict_factory
 
 #Adding by Yi
 from django.contrib.auth import login, authenticate, logout
@@ -56,9 +57,9 @@ def logout_form(request):
     return render(request, 'post_list_without_edit.html', {'posts': posts})
 
 
-def post_list(request):
-    posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'post_list.html', {'posts': posts})
+# def post_list(request):
+#     posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+#     return render(request, 'post_list.html', {'posts': posts})
 
 def post_list_without_edit(request):
     posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -68,25 +69,30 @@ def post_detail_without_edit(request, pk):
     post = get_object_or_404(PostNew, pk=pk)
     return render(request, 'post_detail_without_edit.html', {'post': post})
 
-# def post_detail(request, id):
-#     # post = get_object_or_404(PostNew, pk=pk)
-#     cluster = Cluster(['127.0.0.1'])
-#     session = cluster.connect()
-#     print("SELECT * FROM ezcook17.recipe  WHERE id = '"+str(id)+"' ALLOW FILTERING;")
-#     post = session.execute("SELECT * FROM ezcook17.recipe  WHERE id = '"+str(id)+"' ALLOW FILTERING;")
-#     return render(request, 'post_detail.html', {'post': post})
-
-def post_detail(request, pk):
-    post = get_object_or_404(PostNew, pk=pk)
+def post_detail(request, id):
+    # post = get_object_or_404(PostNew, pk=pk)
+    cluster = Cluster(['127.0.0.1'])
+    session = cluster.connect()
+    print("SELECT * FROM ezcook17.recipe  WHERE id = '"+str(id)+"' ALLOW FILTERING;")
+    post = session.execute("SELECT * FROM ezcook17.recipe  WHERE id = '"+str(id)+"' ALLOW FILTERING;")
     return render(request, 'post_detail.html', {'post': post})
 
-# def post_list(request):
-#     # posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-#     cluster = Cluster(['127.0.0.1'])
-#     session = cluster.connect()
-#     print("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' order by id ALLOW FILTERING;")
-#     posts = session.execute("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' ALLOW FILTERING;")
-#     return render(request, 'post_list.html', {'posts': posts})
+# def post_detail(request, pk):
+#     post = get_object_or_404(PostNew, pk=pk)
+#     return render(request, 'post_detail.html', {'post': post})
+
+def post_list(request):
+    # posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    cluster = Cluster(['127.0.0.1'])
+    session = cluster.connect()
+    print("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' order by id ALLOW FILTERING;")
+    session.row_factory = dict_factory
+    posts = session.execute("SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' ALLOW FILTERING;")
+    print(posts[0]['id'])
+    for i in posts:
+        i['Sid'] = str(i['id'])
+    print(posts[0]['Sid'])
+    return render(request, 'post_list.html', {'posts': posts})
 
 def post_new(request):
     if request.method == "POST":

@@ -60,7 +60,7 @@ def logout_form(request):
 
 def post_list_without_edit(request):
     # posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    cluster = Cluster(['127.0.0.1'])
+    cluster = Cluster(['18.219.216.0'])
     session = cluster.connect()
     sql = "SELECT * FROM ezcook17.recipe ALLOW FILTERING;"
     print(sql)
@@ -69,7 +69,7 @@ def post_list_without_edit(request):
 
 def post_detail_without_edit(request, pk):
     # post = get_object_or_404(PostNew, pk=pk)
-    cluster = Cluster(['127.0.0.1'])
+    cluster = Cluster(['18.219.216.0'])
     session = cluster.connect()
     sql = "SELECT * FROM ezcook17.recipe WHERE pk = {} ALLOW FILTERING;".format(str(pk))
     print(sql)
@@ -78,7 +78,7 @@ def post_detail_without_edit(request, pk):
 
 def post_detail(request, pk):
     # post = get_object_or_404(PostNew, pk=pk)
-    cluster = Cluster(['127.0.0.1'])
+    cluster = Cluster(['18.219.216.0'])
     session = cluster.connect()
     sql = "SELECT * FROM ezcook17.recipe WHERE pk = {} ALLOW FILTERING;".format(str(pk))
     print(sql)
@@ -91,7 +91,7 @@ def post_detail(request, pk):
 
 def post_list(request):
     # posts = PostNew.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    cluster = Cluster(['127.0.0.1'])
+    cluster = Cluster(['18.219.216.0'])
     session = cluster.connect()
     sql = "SELECT * FROM ezcook17.recipe  WHERE owner = '"+str(request.user)+"' ALLOW FILTERING;"
     print(sql)
@@ -106,7 +106,7 @@ def post_new(request):
             # post.author = request.user
             # post.published_date = timezone.now()
             post.save()
-            cluster = Cluster(['127.0.0.1'])
+            cluster = Cluster(['18.219.216.0'])
             session = cluster.connect()
             print("INSERT INTO ezcook17.recipe (id, pk,  content, owner, post_time, title) VALUES (now(), "+str(post.pk)+", '"+str(post.text)+"', '"+str(request.user)+"', '"+str(time.time())+"', '"+str(post.title)+"');")
             session.execute("INSERT INTO ezcook17.recipe (id, pk, content, owner, post_time, title) VALUES (now(), "+str(post.pk)+", '"+str(post.text)+"', '"+str(request.user)+"', toTimestamp(now()), '"+str(post.title)+"');")
@@ -120,7 +120,7 @@ def post_edit(request, pk):
     print("here")
     print(pk)
     post = get_object_or_404(PostNew, pk=pk)
-    cluster = Cluster(['127.0.0.1'])
+    cluster = Cluster(['18.219.216.0'])
     session = cluster.connect()
     sql = "SELECT id FROM ezcook17.recipe  WHERE pk = "+str(pk)+" ALLOW FILTERING;"
     print(sql)
@@ -132,7 +132,7 @@ def post_edit(request, pk):
             # post.author = request.user
             # post.published_date = timezone.now()
             post.save()
-            cluster = Cluster(['127.0.0.1'])
+            cluster = Cluster(['18.219.216.0'])
             session = cluster.connect()
             sql = "update ezcook17.recipe set content = '{}', title = '{}' where pk = {} and id = {}".format(post.text, post.title, post.pk, Cpost[0].id)
             print(sql)

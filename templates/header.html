@@ -5,6 +5,7 @@
     <title>EzCOOK17</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'ezcook17/style.css' %}" >
 </head>
 
@@ -13,7 +14,7 @@
         <a class="navbar-brand" style="color:white" href="/">EzCOOK17</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/">HOME</a>
                 </li>
 		{% if request.user.is_authenticated %}
@@ -58,3 +59,16 @@
 </body>
 
 </html>
+
+<script>
+$(document).ready(function(){
+    let curURL = document.location.toString();
+    $('.navbar-nav li.active').removeClass('active');
+    $('.navbar-nav li a').each(
+        function(){
+            if (curURL.indexOf(this.href) != -1){
+                $(this).closest('li').addClass('active');
+            }
+        });
+});
+</script>

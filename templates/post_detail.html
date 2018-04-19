@@ -3,18 +3,15 @@
 
 
 {% block content %}
-<!-- <div>
-    <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-</div> -->
 <div class="row">
     <div class="col-md-8">
         <div class="post">
+            <a href="{% url 'post_edit' pk=post.pk %}" class="fas fa-edit"></a>
             {% if post.post_time %}
                 <div class="date">
                     {{ post.post_time }}
                 </div>
             {% endif %}
-            <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
             <h1>{{ post.title }}</h1>
             <p>{{ post.content|linebreaksbr }}</p>
         </div>

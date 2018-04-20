@@ -42,6 +42,11 @@ def signup(request):
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
+            cluster = Cluster(['18.219.216.0'])
+            session = cluster.connect()
+            sql = "INSERT INTO ezcook17.user (id, username, password) VALUES (now(), '{}', '{}');".format(str(username), str(raw_password))
+            print(sql)
+            session.execute(sql)
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             return redirect('post_list_without_edit')
@@ -141,3 +146,12 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'post_edit.html', {'form': form})
+
+def my_stock(request):
+    cluster = Cluster(['18.219.216.0'])
+    session = cluster.connect()
+    sql = "SELECT ingredients FROM ezcook17.user WHERE username = '"+str(request.user)+"' ALLOW FILTERING;"
+    print(sql)
+    ingredients = session.execute(sql)
+    print("my ingredients: {}".format(ingredients))
+    return render(request, 'my_stock.html', {'ingredients': ingredients})

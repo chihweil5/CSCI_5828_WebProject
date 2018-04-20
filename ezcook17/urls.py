@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^login/$', views.login_form, name='login_form'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^logout/$', views.logout_form, name='logout_form'),
+    url(r'^mystock/$', views.my_stock, name='my_stock'),
 ]

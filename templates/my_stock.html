@@ -2,14 +2,14 @@
 
 {% block content %}
 <div>
-    <a href="{% url 'post_new' %}" class="fas fa-plus" style="zoom: 150%"></a>
+    <a href="{% url 'add_ingredient' %}" class="fas fa-plus" style="zoom: 150%"></a>
 </div>
 <div class="row">
     <div class="col-md-8">
          <h1>My Stock</h1>
-        {% for ingred in ingredients %}
+        {% for ingred, amount in ingredients.items %}
             <div class="post">
-                <h1><a href="{% url 'my_stock' pk=post.pk %}">{{ ingred.name }}</a></h1>
+                <h1><a href="{% url 'my_stock' %}">{{ ingred }}, {{amount}}</a></h1>
                 <hr class="divider" />
             </div>
         {% endfor %}

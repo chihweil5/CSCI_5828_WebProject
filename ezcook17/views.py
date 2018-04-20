@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from datetime import datetime
-from .models import PostNew
-from .forms import PostForm
+from .models import PostNew, Ingredient
+from .forms import PostForm, IngredientForm
 from django.utils import timezone
 from django.shortcuts import redirect
 from cassandra.cluster import Cluster
@@ -44,7 +44,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             cluster = Cluster(['18.219.216.0'])
             session = cluster.connect()
-            sql = "INSERT INTO ezcook17.user (id, username, password) VALUES (now(), '{}', '{}');".format(str(username), str(raw_password))
+            sql = "INSERT INTO ezcook17.user (id, username, password) VALUES (1, '{}', '{}');".format(str(username), str(raw_password))
             print(sql)
             session.execute(sql)
             user = authenticate(username=username, password=raw_password)
@@ -153,5 +153,28 @@ def my_stock(request):
     sql = "SELECT ingredients FROM ezcook17.user WHERE username = '"+str(request.user)+"' ALLOW FILTERING;"
     print(sql)
     ingredients = session.execute(sql)
-    print("my ingredients: {}".format(ingredients))
-    return render(request, 'my_stock.html', {'ingredients': ingredients})
+    print("my ingredients: {}".format(ingredients[0]))
+    ingred = {}
+    for idx_value, value in enumerate(ingredients[0]):
+        print(idx_value,value)
+        ingred = value
+    print(ingred)
+    return render(request, 'my_stock.html', {'ingredients': ingred})
+
+def add_ingredient(request):
+    if request.method == "POST":
+        form = IngredientForm(request.POST)
+        if form.is_valid():
+            ingredient = form.save(commit=False)
+            ingredient.save()
+            print(type("{now():{}}"))
+            cluster = Cluster(['18.219.216.0'])
+            session = cluster.connect()
+            ingred_map = "{'"+str(ingredient.name)+"':"+str(ingredient.amount)+"}"
+            sql = "update ezcook17.user set ingredients = ingredients + {} where id = 1 and username = '{}'".format(ingred_map, str(request.user))
+            print(sql)
+            session.execute(sql)
+            return redirect('my_stock')
+    else:
+        form = IngredientForm()
+    return render(request, 'add_ingredient.html', {'form': form})

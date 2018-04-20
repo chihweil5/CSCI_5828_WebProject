@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from datetime import datetime
-from .models import Post, PostNew
+from .models import PostNew
 from .forms import PostForm
 from django.utils import timezone
 from django.shortcuts import redirect

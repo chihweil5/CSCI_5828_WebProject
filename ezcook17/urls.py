@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^logout/$', views.logout_form, name='logout_form'),
     url(r'^mystock/$', views.my_stock, name='my_stock'),
     url(r'^ingredient/new$', views.add_ingredient, name='add_ingredient'),
+    # url(r'^ingredient/edit/(?P<name>\w+)/$', views.edit_ingredient, name='edit_ingredient'),
+    url(r'^ingredient/edit/(?P<name>\w+)/$', views.edit_ingredient, name='edit_ingredient'),
 ]

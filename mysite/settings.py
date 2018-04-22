@@ -25,7 +25,7 @@ SECRET_KEY = '!!=g2w*$p^6w+zf%(#xf3il&n4a1d-g*3qmac!1ko!woz(9k7e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'ec2-18-219-216-0.us-east-2.compute.amazonaws.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'ec2-18-188-178-199.us-east-2.compute.amazonaws.com']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ezcook17',
+    'django_cassandra_engine',
 ]
 
 MIDDLEWARE = [
@@ -75,27 +76,28 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django_cassandra_engine',
-#         'NAME': 'db',
-#         'TEST_NAME': 'test_db',
-#         'HOST': 'db1.example.com,db2.example.com',
-#         'OPTIONS': {
-#             'replication': {
-#                 'strategy_class': 'SimpleStrategy',
-#                 'replication_factor': 1
-#             }
-#         }
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_cassandra_engine',
+        'NAME': 'db',
+        'TEST_NAME': 'test_db',
+        # 'HOST': '18.219.216.0',
+        'HOST': '127.0.0.1',
+        'OPTIONS': {
+            'replication': {
+                'strategy_class': 'SimpleStrategy',
+                'replication_factor': 1
+            }
+        }
+    }
+}
 
 
 # Password validation

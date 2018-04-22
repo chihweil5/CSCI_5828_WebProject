@@ -16,11 +16,9 @@ Including another URLconf
 from django.conf.urls import include
 from django.conf.urls import url
 from django.contrib import admin
-from ezcook17.views import post_new
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^post/new/$', post_new),
     url(r'', include('ezcook17.urls'))
 ]

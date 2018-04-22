@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PostNew
+# from .models import PostNew
 # Register your models here.
 
-admin.site.register(PostNew)
+# admin.site.register(PostNew)

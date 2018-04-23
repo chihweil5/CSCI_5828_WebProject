@@ -34,9 +34,9 @@ class RecipeModel(DjangoCassandraModel):
     class Meta:
         get_pk_field='id'
     id = columns.UUID(primary_key=True, default=uuid.uuid1())
-    title = columns.Text()
+    title = columns.Text(required=True)
     content = columns.Text(max_length=100)
-    owner = columns.Text()
+    owner = columns.Text(required=True)
     ingredients = columns.Map(columns.Text(), columns.Float(), required=False)
     post_time = columns.DateTime()
 

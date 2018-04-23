@@ -117,37 +117,32 @@ def add_ingredient(request):
             ingredient_amount = form.cleaned_data['amount']
             ingredients[ingredient_name] = ingredient_amount
             user.save()
-
-            # cluster = Cluster(['18.219.216.0'])
-            # session = cluster.connect()
-            # ingred_map = "{'"+str(ingredient.name)+"':"+str(ingredient.amount)+"}"
-            # sql = "update ezcook17.user set ingredients = ingredients + {} where id = 1 and username = '{}'".format(ingred_map, str(request.user))
-            # print(sql)
-            # session.execute(sql)
             return redirect('my_stock')
     else:
         form = IngredientForm()
     return render(request, 'add_ingredient.html', {'form': form, 'ingredients': ingredients})
 
-def edit_ingredient(request, name):
-    # ingred = get_object_or_404(Ingredient, name=name)
-    # print(ingred.name)
-    # if request.method == "POST":
-    #     # form = PostForm(request.POST, instance=post)
-    #     form = IngredientForm(request.POST, instance=ingred)
-    #     print(form)
-    #     form.name = name
-    #     if form.is_valid():
-    #         ingredient = form.save(commit=False)
-    #         ingredient.save()
-    #         print(type("{now():{}}"))
-    #         cluster = Cluster(['18.219.216.0'])
-    #         session = cluster.connect()
-    #         ingred_map = "{'"+str(ingredient.name)+"':"+str(ingredient.amount)+"}"
-    #         sql = "update ezcook17.user set ingredients = ingredients + {} where id = 1 and username = '{}'".format(ingred_map, str(request.user))
-    #         print(sql)
-    #         session.execute(sql)
-    #         return redirect('my_stock')
-    # else:
-    #     form = IngredientForm()
-    return render(request, 'edit_ingredient.html', {'form': form})
+# def edit_ingredient(request, name):
+#     user = UserModel.objects.filter(username=str(request.user)).get()
+#     ingredients = user.ingredients
+#     ingred
+#     # print(ingred.name)
+#     if request.method == "POST":
+#         # form = PostForm(request.POST, instance=post)
+#         form = IngredientForm(request.POST, instance=ingred)
+#         print(form)
+#         form.name = name
+#         if form.is_valid():
+#             ingredient = form.save(commit=False)
+#             ingredient.save()
+#             print(type("{now():{}}"))
+#             # cluster = Cluster(['18.219.216.0'])
+#             # session = cluster.connect()
+#             # ingred_map = "{'"+str(ingredient.name)+"':"+str(ingredient.amount)+"}"
+#             # sql = "update ezcook17.user set ingredients = ingredients + {} where id = 1 and username = '{}'".format(ingred_map, str(request.user))
+#             # print(sql)
+#             # session.execute(sql)
+#             return redirect('my_stock')
+#     else:
+#         form = IngredientForm()
+#     return render(request, 'edit_ingredient.html', {'form': form})

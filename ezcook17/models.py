@@ -20,29 +20,30 @@ from django_cassandra_engine.models import DjangoCassandraModel
 class UserModel(DjangoCassandraModel):
     class Meta:
         get_pk_field='id'
-    id = columns.UUID(primary_key=True)
+    id = columns.UUID(primary_key=True, default=uuid.uuid1())
     lastname = columns.Text(required=False)
     firstname = columns.Text(required=False)
-    username = columns.Text(primary_key=True)
-    password = columns.Text(required=False)
+    username = columns.Text()
+    password = columns.Text()
     admin = columns.Boolean(required=False)
     favorite = columns.Set(columns.UUID(), required=False)
     ingredients = columns.Map(columns.Text(), columns.Float(), required=False)
 
+
 class RecipeModel(DjangoCassandraModel):
     class Meta:
         get_pk_field='id'
-    id = columns.UUID(primary_key=True)
+    id = columns.UUID(primary_key=True, default=uuid.uuid1())
     title = columns.Text()
-    content = columns.Text()
+    content = columns.Text(max_length=100)
     owner = columns.Text()
     ingredients = columns.Map(columns.Text(), columns.Float(), required=False)
-    post_time = columns.DateTime(primary_key=True, clustering_order="DESC")
+    post_time = columns.DateTime()
 
 class IngredientModel(DjangoCassandraModel):
     class Meta:
         get_pk_field='id'
-    id = columns.UUID(primary_key=True)
+    id = columns.UUID(primary_key=True, default=uuid.uuid1())
     name = columns.Text()
     category  = columns.Text()
     usedby = columns.List(columns.Text)

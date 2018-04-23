@@ -1,15 +1,49 @@
 {% extends 'header.html' %}
 
 {% block content %}
-<!-- <div>
-	<a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-</div> -->
+<h3>My Stock</h3>
 <div class="row">
-    <div class="col-md-8">
-    <h1>New Ingredient</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+    <div class="form-group">
+        <div class="items-collection">
+            {% for ingred, amount in ingredients.items %}
+            <div class="items col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                <div class="info-block block-info clearfix">
+                    <div class="square-box pull-left">
+                        <span class="fas fa-tag"></span>
+                    </div>
+                    <div data-toggle="buttons" class="btn-group btn-group-toggle">
+                        <label id="id_{{ingred}}" class="btn btn-primary">
+                            <div class="itemcontent">
+                                <input type="checkbox" name="option" autocomplete="off" value="">
+                                <span class="fa fa-check fa-2x"></span>
+                                <h5>{{ ingred|linebreaksbr }}</h5>
+                                <h5>{{ amount }}</h5>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
+<h1>New Ingredient</h1>
+<form method="POST" class="post-form">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save btn btn-default">Save</button>
+</form>
+
+<script>
+
+$( ".btn-group label" ).each(function(i, label) {
+    console.log(label)
+    $(this).on("click", function(){
+        console.log($(this).attr('id'))
+        $(this).toggleClass( "active" );
+    });
+});
+
+
+</script>
+
 {% endblock %}

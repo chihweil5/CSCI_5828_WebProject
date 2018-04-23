@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-md-8">
         <div class="post">
-            <a href="{% url 'post_edit' pk=post.pk %}" class="fas fa-edit"></a>
+            <a href="{% url 'post_edit' pk=post.pk|stringformat:"s" %}" class="fas fa-edit"></a>
             {% if post.post_time %}
                 <div class="date">
                     {{ post.post_time }}

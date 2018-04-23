@@ -4,12 +4,6 @@ body{
     color: black;
 }
 
-/* h1 {
-    font-size: 40px;
-    font-weight: bold;
-    color: black;
-} */
-
 h1.header {
     font-family: "Comic Sans MS", cursive, sans-serif;
     font-size: 40px;
@@ -77,4 +71,34 @@ a.header {
 
 .container {
     padding: 20px
+}
+
+.items-collection{
+    margin:20px 0 0 0;
+}
+.items-collection label.btn.active{
+    background-color:#007ba7;
+    color:#FFF;
+}
+.items-collection label.btn-primary{
+    width:90%;
+    border:1px solid #305891;
+    margin:5px;
+    border-radius: 17px;
+    background-color: #FFF;
+    color: #305891
+}
+.items-collection label .itemcontent{
+    width:100%;
+}
+.items-collection .btn-primary{
+    width:100%
+}
+
+.items-collection .btn span.fa{
+    opacity: 1
+}
+
+.items-collection .btn.active span.fa{
+    opacity: 1
 }

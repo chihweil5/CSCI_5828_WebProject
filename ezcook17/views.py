@@ -61,6 +61,15 @@ def post_detail_without_edit(request, pk):
 
 def post_detail(request, pk):
     post = get_object_or_404(RecipeModel, id=uuid.UUID(pk))
+    user = UserModel.objects.filter(username=str(request.user)).get()
+    user_ingred = user.stock
+    post_ingred = post.ingredients
+    shop_ingred = []
+    for i in post_ingred:
+        if i not in user_ingred:
+            shop_ingred += i
+    print(shop_ingred)
+    post.shop_ingred = shop_ingred
     return render(request, 'post_detail.html', {'post': post})
 
 def post_list(request):

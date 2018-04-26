@@ -90,8 +90,8 @@ DATABASES = {
     },
     'cassandra': {
         'ENGINE': 'django_cassandra_engine',
-        'NAME': 'db',
-        'TEST_NAME': 'test_db',
+        'NAME': 'ezcook17',
+        'TEST_NAME': 'test_ezcook17',
         # 'HOST': '18.219.216.0',
         'HOST': '127.0.0.1',
         'OPTIONS': {

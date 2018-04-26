@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .forms import PostForm, IngredientForm
-from .models import UserModel, RecipeModel
+from .models import UserModel, RecipeModel, IngredientModel
 from django.utils import timezone
 from django.shortcuts import redirect
 from cassandra.cluster import Cluster
@@ -77,7 +77,21 @@ def post_new(request):
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post_model = RecipeModel.objects.create(id = uuid.uuid1(), title=post.title, content=post.content, owner=str(request.user), post_time=datetime.now())
+            Rid = uuid.uuid1()
+            post_model = RecipeModel.objects.create(id = Rid, title=post.title, content=post.content, owner=str(request.user), post_time=datetime.now())
+            post.ingredients = ['rice', 'egg']
+
+            for item in post.ingredients:
+                if IngredientModel.objects.filter(name=str(item)):
+                    ingred = IngredientModel.objects.filter(name=str(item)).get()
+                    ingred_usedby = ingred.usedby
+                    ingred_usedby.append(Rid)
+                    IngredientModel.objects(id=ingred.id, name=item).update(usedby=ingred_usedby)
+                else:
+                    ingred_usedby = []
+                    ingred_usedby.append(Rid)
+                    IngredientModel.objects.create(id = uuid.uuid1(), name=item, usedby=ingred_usedby)
+
             print("New model: {}".format(post_model.id))
             return redirect('post_detail', pk=str(post_model.pk))
     else:
@@ -94,6 +108,18 @@ def post_edit(request, pk):
             post.content = update_post.content
             post.post_time = datetime.now()
             post.save()
+
+            for item in post.ingredients:
+                if IngredientModel.objects.filter(name=str(item)):
+                    ingred = IngredientModel.objects.filter(name=str(item)).get()
+                    ingred_usedby = ingred.usedby
+                    ingred_usedby.append(Rid)
+                    IngredientModel.objects(id=ingred.id, name=item).update(usedby=ingred_usedby)
+                else:
+                    ingred_usedby = []
+                    ingred_usedby.append(Rid)
+                    IngredientModel.objects.create(id = uuid.uuid1(), name=item, usedby=ingred_usedby)
+
             return redirect('post_detail', pk=str(post.pk))
     else:
         form = PostForm(instance=post)
@@ -101,14 +127,14 @@ def post_edit(request, pk):
 
 def my_stock(request):
     user = UserModel.objects.filter(username=str(request.user)).get()
-    ingredients = user.ingredients
+    ingredients = user.stock
     print(type(ingredients))
     print("my ingredients: {}".format(ingredients))
     return render(request, 'my_stock.html', {'ingredients': ingredients})
 
 def add_ingredient(request):
     user = UserModel.objects.filter(username=str(request.user)).get()
-    ingredients = user.ingredients
+    ingredients = user.stock
     if request.method == "POST":
         form = IngredientForm(request.POST)
         if form.is_valid():

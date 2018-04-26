@@ -27,7 +27,7 @@ class UserModel(DjangoCassandraModel):
     password = columns.Text()
     admin = columns.Boolean(required=False)
     favorite = columns.Set(columns.UUID(), required=False)
-    ingredients = columns.Map(columns.Text(), columns.Float(), required=False)
+    stock = columns.Map(columns.Text(), columns.Float(), required=False)
 
 
 class RecipeModel(DjangoCassandraModel):
@@ -44,6 +44,6 @@ class IngredientModel(DjangoCassandraModel):
     class Meta:
         get_pk_field='id'
     id = columns.UUID(primary_key=True, default=uuid.uuid1())
-    name = columns.Text()
+    name = columns.Text(primary_key=True)
     category  = columns.Text()
-    usedby = columns.List(columns.Text)
+    usedby = columns.List(columns.UUID)

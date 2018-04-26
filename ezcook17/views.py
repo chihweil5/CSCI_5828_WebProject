@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .forms import PostForm, IngredientForm
-from .models import UserModel, RecipeModel
+from .models import UserModel, RecipeModel, IngredientModel
 from django.utils import timezone
 from django.shortcuts import redirect
 from cassandra.cluster import Cluster
@@ -73,28 +73,28 @@ def post_list(request):
     return render(request, 'post_list.html', {'posts': post_list})
 
 def post_new(request):
-    print('HI')
     if request.method == "POST":
-        print('HIII')
-        # form = PostForm(request.POST)
-        print(request.POST)
         myDict = dict(request.POST.iterlists())
         title = myDict['title'][0]
         content = myDict['content'][0]
-        ingred = myDict['ingred[]']
-        amount = myDict['amount[]']
+        ingred_list = myDict['ingred[]']
+        amount_list = myDict['amount[]']
         ingredients = {}
-        for i, a in zip(ingred, amount):
+        for i, a in zip(ingred_list, amount_list):
             if i != "":
                 ingredients[i] = a
-        post_model = RecipeModel.objects.create(id = uuid.uuid1(), title=title, content=content, owner=str(request.user), post_time=datetime.now(), ingredients=ingredients)
-        # print("New model: {}".format(post_model.id))
-        # return redirect('post_detail', pk=str(post_model.pk))
-
-        # if form.is_valid():
-        #     post = form.save(commit=False)
-        #     post_model = RecipeModel.objects.create(id = uuid.uuid1(), title=post.title, content=post.content, owner=str(request.user), post_time=datetime.now())
-        #     print("New model: {}".format(post_model.id))
+        Rid = uuid.uuid1()
+        post_model = RecipeModel.objects.create(id = Rid, title=title, content=content, owner=str(request.user), post_time=datetime.now(), ingredients=ingredients)
+        for item in ingred_list:
+            if IngredientModel.objects.filter(name=str(item)):
+                ingred = IngredientModel.objects.filter(name=str(item)).get()
+                ingred_usedby = ingred.usedby
+                ingred_usedby.append(Rid)
+                IngredientModel.objects(id=ingred.id, name=item).update(usedby=ingred_usedby)
+            else:
+                ingred_usedby = []
+                ingred_usedby.append(Rid)
+                IngredientModel.objects.create(id = uuid.uuid1(), name=item, usedby=ingred_usedby)
         return redirect('post_detail', pk=str(post_model.pk))
     else:
         form = PostForm()
@@ -110,6 +110,18 @@ def post_edit(request, pk):
             post.content = update_post.content
             post.post_time = datetime.now()
             post.save()
+
+            for item in post.ingredients:
+                if IngredientModel.objects.filter(name=str(item)):
+                    ingred = IngredientModel.objects.filter(name=str(item)).get()
+                    ingred_usedby = ingred.usedby
+                    ingred_usedby.append(Rid)
+                    IngredientModel.objects(id=ingred.id, name=item).update(usedby=ingred_usedby)
+                else:
+                    ingred_usedby = []
+                    ingred_usedby.append(Rid)
+                    IngredientModel.objects.create(id = uuid.uuid1(), name=item, usedby=ingred_usedby)
+
             return redirect('post_detail', pk=str(post.pk))
     else:
         form = PostForm(instance=post)
@@ -117,14 +129,14 @@ def post_edit(request, pk):
 
 def my_stock(request):
     user = UserModel.objects.filter(username=str(request.user)).get()
-    ingredients = user.ingredients
+    ingredients = user.stock
     print(type(ingredients))
     print("my ingredients: {}".format(ingredients))
     return render(request, 'my_stock.html', {'ingredients': ingredients})
 
 def add_ingredient(request):
     user = UserModel.objects.filter(username=str(request.user)).get()
-    ingredients = user.ingredients
+    ingredients = user.stock
     if request.method == "POST":
         form = IngredientForm(request.POST)
         if form.is_valid():

@@ -83,7 +83,7 @@ def post_list(request):
 
 def post_new(request):
     if request.method == "POST":
-        myDict = dict(request.POST.iterlists())
+        myDict = dict(request.POST.lists())
         title = myDict['title'][0]
         content = myDict['content'][0]
         ingred_list = myDict['ingred[]']
@@ -158,6 +158,34 @@ def add_ingredient(request):
     else:
         form = IngredientForm()
     return render(request, 'add_ingredient.html', {'form': form, 'ingredients': ingredients})
+
+def recommendation(request):
+
+    user = UserModel.objects.filter(username=str(request.user)).get()
+    ingredients = user.stock
+    Recipe = {}
+    for i in ingredients:  
+        for r in i.usedby:
+            if r not in Recipe:
+                Recipe[r] = 1
+            else:
+                Recipe[r] += 1
+    s = [(r, Recipe[r]) for r in sorted(Recipe, key=Recipe.get, reverse=True)]
+    i = 1
+    Recommendation = {}
+    
+    for recpie, count in s:
+        if i > 5:
+            break 
+        rec = RecipeModel.objects.filter(id=recpie).get()
+        need = 0 
+        for i in rec.ingredients:
+            if i not in ingredients:
+                need += 1
+        Recommendation[recpie] = need
+
+    Final = [(f, Recommendation[f]) for f in sorted(Recommendation, key=Recommendation.get, reverse=True)]
+
 
 # def edit_ingredient(request, name):
 #     user = UserModel.objects.filter(username=str(request.user)).get()

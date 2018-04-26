@@ -3,11 +3,109 @@
 {% block content %}
 <div class="row">
     <div class="col-md-8">
-    <h1>New post</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success margin">Save</button>
+    <h1>New Recipe</h1>
+    <form id="form" method="POST" class="post-form">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input id="title" name="title" type="text" class="form-control" aria-describedby="title" placeholder="Enter title">
+        </div>
+
+        <div class="input_fields_wrap" style="margin-top:50px">
+            <button type="button" class="add_field_button btn btn-primary" style="margin-bottom:20px">Add Ingredient</button>
+            <div class="input-group" style="margin-bottom: 10px">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Ingredient and Amount</span>
+                </div>
+                <input type="text" class="form-control" name="ingred[]">
+                <input type="text" class="form-control" name="amount[]">
+                <button type="button" class="remove-field btn btn-danger">Remove</button>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top:50px">
+          <label for="content">Content:</label>
+          <input id="content" name="content" type="text" class="form-control" aria-describedby="content" placeholder="Enter Content">
+        </div>
+
+        <button id="submit_btn" type="submit" class="btn btn-success margin">Save</button>
         <a href="{% url 'post_list' %}"><button type="button" class="btn btn-secondary margin">Cancel</button></a>
     </form>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script>
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$(document).ready(function() {
+    var max_fields      = 10; //maximum input boxes allowed
+    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+    var add_button      = $(".add_field_button"); //Add button ID
+
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            $(wrapper).append(`<div class="input-group" style="margin-bottom: 10px">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Ingredient and Amount</span>
+                </div>
+                <input type="text" class="form-control" name="ingred[]">
+                <input type="text" class="form-control" name="amount[]">
+                <button type="button" class="remove-field btn btn-danger">Remove</button>
+            </div>`).children(':last').hide().fadeIn(500); //add input box
+        }
+    });
+
+    $(wrapper).on("click",".remove-field", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    });
+
+    // $('#submit_btn').on("click", function(e){
+    //     e.preventDefault();
+    //     var ingred = [];
+    //     $('input[name^=ingred]').each(function(){
+    //         ingred.push($(this).val());
+    //     });
+    //     console.log(ingred);
+    //     ingred.
+    //     return false;
+    // })
+
+    // $('#form').on("submit", function( event ) {
+    //     event.preventDefault();
+    //     var ingred = [];
+    //     var amount = [];
+    //     $('input[name^=ingred]').each(function(){
+    //         ingred.push($(this).val());
+    //     });
+    //     $('input[name^=amount]').each(function(){
+    //         amount.push($(this).val());
+    //     });
+    //     console.log(ingred)
+    //     // var csrftoken = Cookies.get('csrf_token');
+    //     // $.ajaxSetup({
+    //     //     beforeSend: function(xhr, settings) {
+    //     //         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+    //     //             xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    //     //         }
+    //     //     }
+    //     // });
+    //     // return false;
+    //     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    //     $.ajax({
+    //             type: "POST",
+    //             data: {'csrfmiddlewaretoken':csrftoken, 'title':$('#title').val(), 'content':$('#content').val(), 'ingred':ingred, 'amount':amount},
+    //             // data: {'ingred':ingred, 'amount':amount},
+    //             success: function(data) {
+    //                 console.log(data)
+    //                 alert(data);
+    //             }
+    //     });
+    //         return false;
+    // });
+});
+</script>
 {% endblock %}

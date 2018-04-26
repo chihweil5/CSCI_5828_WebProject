@@ -119,3 +119,7 @@ a.header {
 .items-collection .btn.active span.fa{
     opacity: 1;
 }
+
+.remove-field {
+    margin-left: 10px;
+}

@@ -73,13 +73,29 @@ def post_list(request):
     return render(request, 'post_list.html', {'posts': post_list})
 
 def post_new(request):
+    print('HI')
     if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post_model = RecipeModel.objects.create(id = uuid.uuid1(), title=post.title, content=post.content, owner=str(request.user), post_time=datetime.now())
-            print("New model: {}".format(post_model.id))
-            return redirect('post_detail', pk=str(post_model.pk))
+        print('HIII')
+        # form = PostForm(request.POST)
+        print(request.POST)
+        myDict = dict(request.POST.iterlists())
+        title = myDict['title'][0]
+        content = myDict['content'][0]
+        ingred = myDict['ingred[]']
+        amount = myDict['amount[]']
+        ingredients = {}
+        for i, a in zip(ingred, amount):
+            if i != "":
+                ingredients[i] = a
+        post_model = RecipeModel.objects.create(id = uuid.uuid1(), title=title, content=content, owner=str(request.user), post_time=datetime.now(), ingredients=ingredients)
+        # print("New model: {}".format(post_model.id))
+        # return redirect('post_detail', pk=str(post_model.pk))
+
+        # if form.is_valid():
+        #     post = form.save(commit=False)
+        #     post_model = RecipeModel.objects.create(id = uuid.uuid1(), title=post.title, content=post.content, owner=str(request.user), post_time=datetime.now())
+        #     print("New model: {}".format(post_model.id))
+        return redirect('post_detail', pk=str(post_model.pk))
     else:
         form = PostForm()
     return render(request, 'post_new.html', {'form': form})

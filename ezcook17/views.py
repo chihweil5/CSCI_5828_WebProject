@@ -62,12 +62,13 @@ def post_detail_without_edit(request, pk):
 def post_detail(request, pk):
     post = get_object_or_404(RecipeModel, id=uuid.UUID(pk))
     user = UserModel.objects.filter(username=str(request.user)).get()
+
     user_ingred = user.stock
     post_ingred = post.ingredients
     shop_ingred = []
     for i in post_ingred:
         if i not in user_ingred:
-            shop_ingred += i
+            shop_ingred.append(i)
     print(shop_ingred)
     post.shop_ingred = shop_ingred
     return render(request, 'post_detail.html', {'post': post})
@@ -112,24 +113,32 @@ def post_new(request):
 def post_edit(request, pk):
     post = get_object_or_404(RecipeModel, id=pk)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            update_post = form.save(commit=False)
-            post.title = update_post.title
-            post.content = update_post.content
-            post.post_time = datetime.now()
-            post.save()
-
-            for item in post.ingredients:
-                if IngredientModel.objects.filter(name=str(item)):
-                    ingred = IngredientModel.objects.filter(name=str(item)).get()
-                    ingred_usedby = ingred.usedby
-                    ingred_usedby.append(Rid)
-                    IngredientModel.objects(id=ingred.id, name=item).update(usedby=ingred_usedby)
-                else:
-                    ingred_usedby = []
-                    ingred_usedby.append(Rid)
-                    IngredientModel.objects.create(id = uuid.uuid1(), name=item, usedby=ingred_usedby)
+        myDict = dict(request.POST.iterlists())
+        title = myDict['title'][0]
+        content = myDict['content'][0]
+        ingred_list = myDict['ingred[]']
+        amount_list = myDict['amount[]']
+        ingredients = {}
+        for i, a in zip(ingred_list, amount_list):
+            if i != "":
+                ingredients[i] = a
+        print(ingredients)
+        post.title = title
+        post.content = content
+        post.ingredients = ingredients
+        post.post_time = datetime.now()
+        post.save()
+        Rid = post.id
+        for item in post.ingredients:
+            if IngredientModel.objects.filter(name=str(item)):
+                ingred = IngredientModel.objects.filter(name=str(item)).get()
+                ingred_usedby = ingred.usedby
+                ingred_usedby.append(Rid)
+                IngredientModel.objects(id=ingred.id, name=item).update(usedby=ingred_usedby)
+            else:
+                ingred_usedby = []
+                ingred_usedby.append(Rid)
+                IngredientModel.objects.create(id = uuid.uuid1(), name=item, usedby=ingred_usedby)
 
             return redirect('post_detail', pk=str(post.pk))
     else:

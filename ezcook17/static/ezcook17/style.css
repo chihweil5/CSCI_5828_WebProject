@@ -123,3 +123,7 @@ a.header {
 .remove-field {
     margin-left: 10px;
 }
+
+.content {
+    height:500px;
+}

@@ -18,4 +18,24 @@
     </div>
 </div>
 
+<h4>Shopping List:</h4>
+<div class="items-collection">
+    <div class="form-group row">
+    {% for ingred in post.shop_ingred %}
+        <div class="items">
+            <div class="info-block block-info clearfix">
+                <div data-toggle="buttons" class="btn-group btn-group-toggle">
+                    <label id="id_{{ingred}}" class="btn btn-primary">
+                        <div class="itemcontent">
+                            <span class="fa fa-check fa-2x" style="zoom:90%"></span>
+                            <h5>{{ ingred }}</h5>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
 {% endblock %}

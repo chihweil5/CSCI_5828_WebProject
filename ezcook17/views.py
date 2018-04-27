@@ -151,8 +151,10 @@ def my_stock(request):
     # print(type(ingredients))
 
     Recipe = {}
-    for i in ingredients:  
-        for r in i.usedby:
+    print(ingredients)
+    for i in ingredients:
+        ingred = IngredientModel.objects.filter(name=str(i)).get()
+        for r in ingred.usedby:
             if r not in Recipe:
                 Recipe[r] = 1
             else:
@@ -182,7 +184,7 @@ def my_stock(request):
 
     print("my ingredients: {}".format(ingredients))
     # print("Recommendation: {}".format(ingredients))
-    return render(request, 'my_stock.html', {'ingredients': ingredients, 'Recommendation': Final})
+    return render(request, 'my_stock.html', {'ingredients': ingredients, 'recommendation': Final})
 
 def add_ingredient(request):
     user = UserModel.objects.filter(username=str(request.user)).get()
@@ -199,34 +201,6 @@ def add_ingredient(request):
     else:
         form = IngredientForm()
     return render(request, 'add_ingredient.html', {'form': form, 'ingredients': ingredients})
-
-def recommendation(request):
-
-    user = UserModel.objects.filter(username=str(request.user)).get()
-    ingredients = user.stock
-    Recipe = {}
-    for i in ingredients:  
-        for r in i.usedby:
-            if r not in Recipe:
-                Recipe[r] = 1
-            else:
-                Recipe[r] += 1
-    s = [(r, Recipe[r]) for r in sorted(Recipe, key=Recipe.get, reverse=True)]
-    i = 1
-    Recommendation = {}
-    
-    for recpie, count in s:
-        if i > 5:
-            break 
-        rec = RecipeModel.objects.filter(id=recpie).get()
-        need = 0 
-        for i in rec.ingredients:
-            if i not in ingredients:
-                need += 1
-        Recommendation[recpie] = need
-
-    Final = [(f, Recommendation[f]) for f in sorted(Recommendation, key=Recommendation.get, reverse=True)]
-
 
 # def edit_ingredient(request, name):
 #     user = UserModel.objects.filter(username=str(request.user)).get()

@@ -3,10 +3,10 @@
 
 
 {% block content %}
+<a href="{% url 'post_edit' pk=post.pk|stringformat:"s" %}" class="fas fa-edit"></a>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-7">
         <div class="post">
-            <a href="{% url 'post_edit' pk=post.pk|stringformat:"s" %}" class="fas fa-edit"></a>
             {% if post.post_time %}
                 <div class="date">
                     {{ post.post_time }}
@@ -15,26 +15,38 @@
             <h1>{{ post.title }}</h1>
             <p>{{ post.content|linebreaksbr }}</p>
         </div>
+        <div class="card" style="width: 18rem; margin-top: 40px;">
+          <div class="card-header">
+            Ingredient
+          </div>
+          <ul class="list-group list-group-flush">
+          {% for ingred, amount in post.ingredients.items %}
+            <li class="list-group-item">{{ingred}} {{amount}}</li>
+            {% endfor %}
+          </ul>
+        </div>
     </div>
-</div>
 
-<h4>Shopping List:</h4>
-<div class="items-collection">
-    <div class="form-group row">
-    {% for ingred in post.shop_ingred %}
-        <div class="items">
-            <div class="info-block block-info clearfix">
-                <div data-toggle="buttons" class="btn-group btn-group-toggle">
-                    <label id="id_{{ingred}}" class="btn btn-primary">
-                        <div class="itemcontent">
-                            <span class="fa fa-check fa-2x" style="zoom:90%"></span>
-                            <h5>{{ ingred }}</h5>
+    <div class="col-md-5">
+        <h3>You will also need...</h3>
+        <div class="items-collection">
+            <div class="form-group row">
+            {% for ingred in post.shop_ingred %}
+                <div class="items">
+                    <div class="info-block block-info clearfix">
+                        <div data-toggle="buttons" class="btn-group btn-group-toggle">
+                            <label id="id_{{ingred}}" class="btn btn-primary">
+                                <div class="itemcontent">
+                                    <span class="fa fa-check fa-2x" style="zoom:90%"></span>
+                                    <h5>{{ ingred }}</h5>
+                                </div>
+                            </label>
                         </div>
-                    </label>
+                    </div>
                 </div>
+            {% endfor %}
             </div>
         </div>
-    {% endfor %}
     </div>
 </div>
 

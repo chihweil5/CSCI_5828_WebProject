@@ -31,18 +31,19 @@
             </div>
         </div>
     </div>
-    {% for recipe in recommendation %}
     <div class="col-md-4">
-        <div class="card" style="width: 25rem;">
+        <h3>You will also like...</h3>
+        {% for recipe in recommendation %}
+        <div class="card" style="width: 25rem; margin-bottom: 5px">
           <div class="card-body">
             <h5 class="card-title" id="title">{{recipe.title}}</h5>
             <h6 class="card-subtitle mb-2 text-muted" id="author">Author: {{recipe.owner}}</h6>
             <p class="card-text" id="content">{{recipe.content}}</p>
-            <a href="#" class="card-link">More...</a>
+            <a href="/post/{{recipe.id}}" class="card-link">More...</a>
           </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 
 <script>

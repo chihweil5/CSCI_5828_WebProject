@@ -179,7 +179,7 @@ def my_stock(request):
     i = 1
     Final = []
     for recpie, count in r:
-        if i > 5:
+        if i > 3:
             break
         rec = RecipeModel.objects.filter(id=recpie).get()
         Final.append(rec)

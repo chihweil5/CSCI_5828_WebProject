@@ -1,11 +1,10 @@
 body{
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-family: "Comic Sans MS", cursive, sans-serif;
     background-color: #ECECEA;
     color: black;
 }
 
 h1.header {
-    font-family: "Comic Sans MS", cursive, sans-serif;
     font-size: 40px;
     font-weight: bold;
     color: #ECECEA;
@@ -70,7 +69,8 @@ a.header {
 }
 
 .container {
-    padding: 20px
+    padding: 20px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 #search {
@@ -126,4 +126,9 @@ a.header {
 
 .content {
     height:500px;
+}
+
+h6.card-subtitle {
+    font-size: 0.8rem;
+    opacity: 0.8;
 }

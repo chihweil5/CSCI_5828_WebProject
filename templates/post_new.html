@@ -17,8 +17,8 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Ingredient and Amount</span>
                 </div>
-                <input type="text" class="form-control" name="ingred[]">
-                <input type="text" class="form-control" name="amount[]">
+                <input type="text" class="form-control" name="ingred[]" placeholder="Ingredient">
+                <input type="text" class="form-control" name="amount[]" placeholder="Amount">
                 <button type="button" class="remove-field btn btn-danger">Remove</button>
             </div>
         </div>
@@ -47,8 +47,8 @@ $(document).ready(function() {
                 <div class="input-group-prepend">
                     <span class="input-group-text">Ingredient and Amount</span>
                 </div>
-                <input type="text" class="form-control" name="ingred[]">
-                <input type="text" class="form-control" name="amount[]">
+                <input type="text" class="form-control" name="ingred[]" placeholder="Ingredient">
+                <input type="text" class="form-control" name="amount[]" placeholder="Amount">
                 <button type="button" class="remove-field btn btn-danger">Remove</button>
             </div>`).children(':last').hide().fadeIn(500); //add input box
         }

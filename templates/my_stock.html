@@ -2,52 +2,67 @@
 <div>
     <a href="{% url 'add_ingredient' %}" class="fas fa-plus" style="zoom: 150%"></a>
 </div>
-<h1>My Stock</h1>
-<div class="form-group col-md-12 row" style="margin-top: 30px">
-    <i class="fa fa-search fa-2x pull-left searchicon"></i>
-    <div class="col-sm-8 col-md-8 col-lg-8">
-        <input type="search" class="form-control" id="search" placeholder="Filter items...">
-    </div>
-</div>
-
-<div class="items-collection">
-    <div class="form-group row">
-    {% for ingred, amount in ingredients.items %}
-        <div class="items">
-            <div class="info-block block-info clearfix">
-                <div data-toggle="buttons" class="btn-group btn-group-toggle">
-                    <label id="id_{{ingred}}" class="btn btn-primary">
-                        <div class="itemcontent">
-                            <span class="fa fa-check fa-2x" style="zoom:90%"></span>
-                            <h5>{{ amount }} {{ ingred }}</h5>
-                        </div>
-                    </label>
-                </div>
+<div class="row">
+    <div class="col-md-8">
+        <h1>My Stock</h1>
+        <div class="form-group col-md-12 row" style="margin-top: 30px">
+            <i class="fa fa-search fa-2x pull-left searchicon"></i>
+            <div class="col-sm-12 col-md-12 col-lg-8">
+                <input type="search" class="form-control" id="search" placeholder="Filter items...">
             </div>
         </div>
-    {% endfor %}
+
+        <div class="items-collection">
+            <div class="form-group row">
+                {% for ingred, amount in ingredients.items %}
+                <div class="items">
+                    <div class="info-block block-info clearfix">
+                        <div data-toggle="buttons" class="btn-group btn-group-toggle">
+                            <label id="id_{{ingred}}" class="btn btn-primary">
+                                <div class="itemcontent">
+                                    <span class="fa fa-check fa-2x" style="zoom:90%"></span>
+                                    <h5>{{ amount }} {{ ingred }}</h5>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+    {% for recipe in recommendation %}
+    <div class="col-md-4">
+        <div class="card" style="width: 25rem;">
+          <div class="card-body">
+            <h5 class="card-title" id="title">{{recipe.title}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted" id="author">Author: {{recipe.owner}}</h6>
+            <p class="card-text" id="content">{{recipe.content}}</p>
+            <a href="#" class="card-link">More...</a>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 
 <script>
-$( ".btn-group label" ).each(function(i, label) {
-    $(this).click(function(){
-        console.log($(this).hasClass('active'))
-        $(this).hasClass('active') ? $(this).removeClass("active") : $(this).addClass("active");
+    $(".btn-group label").each(function(i, label) {
+        $(this).click(function() {
+            console.log($(this).hasClass('active'))
+            $(this).hasClass('active') ? $(this).removeClass("active") : $(this).addClass("active");
+        });
     });
-});
-
 </script>
 
 <script>
-$(function () {
-    $('#search').on('keyup', function () {
-        var pattern = $(this).val();
-        $('.items-collection .items').hide();
-        $('.items-collection .items').filter(function () {
-            return $(this).text().match(new RegExp(pattern, 'i'));
-        }).show();
+    $(function() {
+        $('#search').on('keyup', function() {
+            var pattern = $(this).val();
+            $('.items-collection .items').hide();
+            $('.items-collection .items').filter(function() {
+                return $(this).text().match(new RegExp(pattern, 'i'));
+            }).show();
+        });
     });
-});
 </script>
 {% endblock %}

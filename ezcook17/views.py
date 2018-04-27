@@ -151,39 +151,43 @@ def my_stock(request):
     # print(type(ingredients))
 
     Recipe = {}
-    print(ingredients)
+    # print(ingredients)
     for i in ingredients:
-        ingred = IngredientModel.objects.filter(name=str(i)).get()
-        for r in ingred.usedby:
-            if r not in Recipe:
-                Recipe[r] = 1
-            else:
-                Recipe[r] += 1
+        if IngredientModel.objects.filter(name=str(i)):
+            ingred = IngredientModel.objects.filter(name=str(i)).get()
+            for r in ingred.usedby:
+                if r not in Recipe:
+                    Recipe[r] = 1
+                else:
+                    Recipe[r] += 1
     s = [(r, Recipe[r]) for r in sorted(Recipe, key=Recipe.get, reverse=True)]
-    
+    print(s)
     i = 1
     Recommendation = {}
     for recpie, count in s:
         if i > 5:
-            break 
+            break
         rec = RecipeModel.objects.filter(id=recpie).get()
-        need = 0 
-        for i in rec.ingredients:
-            if i not in ingredients:
+        need = 0
+        for ingred in rec.ingredients:
+            if ingred not in ingredients:
                 need += 1
+        i += 1
         Recommendation[recpie] = need
     r = [(f, Recommendation[f]) for f in sorted(Recommendation, key=Recommendation.get, reverse=False)]
-
+    print(r)
     i = 1
-    Final = {}
+    Final = []
     for recpie, count in r:
         if i > 5:
-            break 
+            break
         rec = RecipeModel.objects.filter(id=recpie).get()
-        Final[recpie] = rec
+        Final.append(rec)
+        i += 1
 
-    print("my ingredients: {}".format(ingredients))
+    # print("my ingredients: {}".format(ingredients))
     # print("Recommendation: {}".format(ingredients))
+    print(Final)
     return render(request, 'my_stock.html', {'ingredients': ingredients, 'recommendation': Final})
 
 def add_ingredient(request):

@@ -201,6 +201,12 @@ def add_ingredient(request):
             ingredient_amount = form.cleaned_data['amount']
             ingredients[ingredient_name] = ingredient_amount
             user.save()
+            if IngredientModel.objects.filter(name=str(ingredient_name)):
+                ingred = IngredientModel.objects.filter(name=str(ingredient_name)).get()
+                ingred_usedby = ingred.usedby
+                IngredientModel.objects(id=ingred.id, name=ingredient_name).update(usedby=ingred_usedby)
+            else:
+                IngredientModel.objects.create(id=uuid.uuid1(), name=ingredient_name, usedby=[])
             return redirect('my_stock')
     else:
         form = IngredientForm()

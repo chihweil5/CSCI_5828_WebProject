@@ -132,3 +132,17 @@ h6.card-subtitle {
     font-size: 0.8rem;
     opacity: 0.8;
 }
+
+#fav {
+     cursor: pointer
+}
+
+.like {
+    color:#D9853B;
+    opacity: 1;
+}
+
+.unlike {
+    color:#808080;
+    opacity:0.4;
+}

@@ -1,7 +1,5 @@
 {% extends 'header.html' %}
 
-
-
 {% block content %}
 <div class="row">
     <div class="col-md-7">
@@ -11,7 +9,11 @@
                     {{ post.post_time }}
                 </div>
             {% endif %}
-            <h1 style="margin-bottom: 30px;">{{ post.title }}</h1>
+
+            <h1 style="margin-bottom: 30px;">
+                {{ post.title }}
+                <span id='fav'><i class="fas fa-utensils unlike" style="zoom: 80%;"></i></span>
+            </h1>
             <div class="row">
                 <div class="col-md-8">
                     <div class="card" style="width: 26rem; height: 20rem;">
@@ -60,5 +62,17 @@
         </div>
     {% endif %}
 </div>
+
+<script>
+$('#fav').on("click", function(){
+    if($(this).children().hasClass('like')){
+        $(this).children().removeClass("like");
+        $(this).children().addClass("unlike");
+    } else {
+        $(this).children().removeClass("unlike");
+        $(this).children().addClass("like");
+    }
+});
+</script>
 
 {% endblock %}

@@ -4,7 +4,7 @@
 </div>
 <div class="row">
     <div class="col-md-8">
-        <h1>My Stock</h1>
+        <h1 style="margin-top: 30px">My Stock</h1>
         <div class="form-group col-md-12 row" style="margin-top: 30px">
             <i class="fa fa-search fa-2x pull-left searchicon"></i>
             <div class="col-sm-12 col-md-12 col-lg-8">
@@ -34,9 +34,9 @@
     <div class="col-md-4">
         <h3>You will also like...</h3>
         {% for recipe in recommendation %}
-        <div class="card" style="width: 25rem; margin-bottom: 5px">
+        <div class="card bg-light" style="width: 25rem; margin-bottom: 5px">
           <div class="card-body">
-            <h5 class="card-title" id="title">{{recipea.title}}</h5>
+            <h5 class="card-title" id="title">{{recipe.title}}</h5>
             <h6 class="card-subtitle mb-2 text-muted" id="author">Author: {{recipe.owner}}</h6>
             <p class="card-text" id="content">{{recipe.content}}</p>
             <a href="/post/{{recipe.id}}" class="card-link">More...</a>

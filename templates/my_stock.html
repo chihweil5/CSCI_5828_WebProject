@@ -31,8 +31,8 @@
             </div>
         </div>
     </div>
-    {% for recipe in recommendation %}
     <div class="col-md-4">
+    {% for recipe in recommendation %}
         <div class="card" style="width: 25rem;">
           <div class="card-body">
             <h5 class="card-title" id="title">{{recipe.title}}</h5>
@@ -41,8 +41,8 @@
             <a href="#" class="card-link">More...</a>
           </div>
         </div>
-    </div>
     {% endfor %}
+    </div>
 </div>
 
 <script>

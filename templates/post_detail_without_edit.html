@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-7">
         <div class="post">
             {% if post.post_time %}
                 <div class="date">
@@ -15,7 +15,40 @@
             <h1>{{ post.title }}</h1>
             <p>{{ post.content|linebreaksbr }}</p>
         </div>
+        <div class="card" style="width: 35rem; margin-top: 40px;">
+          <div class="card-header">
+            Ingredient
+          </div>
+          <ul class="list-group list-group-flush">
+          {% for ingred, amount in post.ingredients.items %}
+            <li class="list-group-item">{{ingred}} {{amount}}</li>
+            {% endfor %}
+          </ul>
+        </div>
     </div>
+    {% if request.user.is_authenticated %}
+        <div class="col-md-5">
+            <h3>You will also need...</h3>
+            <div class="items-collection">
+                <div class="form-group row">
+                {% for ingred in post.shop_ingred %}
+                    <div class="items">
+                        <div class="info-block block-info clearfix">
+                            <a target="_blank" href="https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={{ ingred }}"><div data-toggle="buttons" class="btn-group btn-group-toggle">
+                                <label id="id_{{ingred}}" class="btn btn-primary">
+                                    <div class="itemcontent">
+                                        <span class="fa fa-check fa-2x" style="zoom:90%"></span>
+                                        <h5>{{ ingred }}</h5>
+                                    </div>
+                                </label>
+                            </div></a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

@@ -148,9 +148,41 @@ def post_edit(request, pk):
 def my_stock(request):
     user = UserModel.objects.filter(username=str(request.user)).get()
     ingredients = user.stock
-    print(type(ingredients))
+    # print(type(ingredients))
+
+    Recipe = {}
+    for i in ingredients:  
+        for r in i.usedby:
+            if r not in Recipe:
+                Recipe[r] = 1
+            else:
+                Recipe[r] += 1
+    s = [(r, Recipe[r]) for r in sorted(Recipe, key=Recipe.get, reverse=True)]
+    
+    i = 1
+    Recommendation = {}
+    for recpie, count in s:
+        if i > 5:
+            break 
+        rec = RecipeModel.objects.filter(id=recpie).get()
+        need = 0 
+        for i in rec.ingredients:
+            if i not in ingredients:
+                need += 1
+        Recommendation[recpie] = need
+    r = [(f, Recommendation[f]) for f in sorted(Recommendation, key=Recommendation.get, reverse=False)]
+
+    i = 1
+    Final = {}
+    for recpie, count in r:
+        if i > 5:
+            break 
+        rec = RecipeModel.objects.filter(id=recpie).get()
+        Final[recpie] = rec
+
     print("my ingredients: {}".format(ingredients))
-    return render(request, 'my_stock.html', {'ingredients': ingredients})
+    # print("Recommendation: {}".format(ingredients))
+    return render(request, 'my_stock.html', {'ingredients': ingredients, 'Recommendation': Final})
 
 def add_ingredient(request):
     user = UserModel.objects.filter(username=str(request.user)).get()

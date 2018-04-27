@@ -34,14 +34,14 @@
             {% for ingred in post.shop_ingred %}
                 <div class="items">
                     <div class="info-block block-info clearfix">
-                        <div data-toggle="buttons" class="btn-group btn-group-toggle">
+                        <a target="_blank" href="https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords={{ ingred }}"><div data-toggle="buttons" class="btn-group btn-group-toggle">
                             <label id="id_{{ingred}}" class="btn btn-primary">
                                 <div class="itemcontent">
                                     <span class="fa fa-check fa-2x" style="zoom:90%"></span>
                                     <h5>{{ ingred }}</h5>
                                 </div>
                             </label>
-                        </div>
+                        </div></a>
                     </div>
                 </div>
             {% endfor %}

@@ -38,6 +38,6 @@ $ python3 manage.py runserver
 ```
 
 ### The public link for this website
-http://ec2-18-219-216-0.us-east-2.compute.amazonaws.com:8080/home/
+http://ec2-18-188-178-199.us-east-2.compute.amazonaws.com:8080/home/
 
 Pivotal tracker link is [this](https://www.pivotaltracker.com/n/projects/2166399).

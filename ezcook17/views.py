@@ -53,7 +53,12 @@ def logout_form(request):
 
 def post_list_without_edit(request):
     posts = RecipeModel.objects.all()
-    return render(request, 'post_list_without_edit.html', {'posts': posts})
+    post_list = []
+    for model in posts:
+        post_list.append(model)
+        print(model)
+    post_list.sort(key=lambda post: post.post_time, reverse=True)
+    return render(request, 'post_list_without_edit.html', {'posts': post_list})
 #
 def post_detail_without_edit(request, pk):
     post = get_object_or_404(RecipeModel, id=uuid.UUID(pk))
@@ -87,12 +92,28 @@ def post_detail(request, pk):
 
 def post_list(request):
     print("Hey this is post list")
-    posts = RecipeModel.objects.all()
     post_list = []
-    for model in posts:
-        post_list.append(model)
-    post_list.sort(key=lambda post: post.post_time, reverse=True)
+    if RecipeModel.objects.filter(owner=str(request.user)):
+        posts = RecipeModel.objects.filter(owner=str(request.user))
+        # print(posts)
+        for model in posts:
+            post_list.append(model)
+            print(model)
+        post_list.sort(key=lambda post: post.post_time, reverse=True)
     return render(request, 'post_list.html', {'posts': post_list})
+
+def favorite_list(request):
+    post_list = []
+    if UserModel.objects.filter(username=str(request.user)):
+        user = UserModel.objects.filter(username=str(request.user)).get()
+        favor = user.favorite
+        # print(posts)
+        for post_id in favor:
+            model = RecipeModel.objects.filter(id=post_id).get()
+            post_list.append(model)
+            print(model)
+        post_list.sort(key=lambda post: post.post_time, reverse=True)
+    return render(request, 'post_list_without_edit.html', {'posts': post_list})
 
 def post_new(request):
     if request.method == "POST":

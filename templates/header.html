@@ -25,13 +25,22 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/mystock">My Stock</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/favorite">My Favorite</a>
+                </li>
 		{% endif %}
             </ul>
-            <form class="form-inline my-2 my-lg-0">
+            <!-- <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            </form> -->
             {% if request.user.is_authenticated %}
+                <div class="my-2 ml-4">
+                    <a href="/post/new/" class="top-menu"><button class="btn btn-warning my-2 my-sm-0" type="submit">+ Add recipes</button></a>
+                </div>
+                <div class="my-2 ml-4">
+                    <a href="/mystock/new" class="top-menu"><button class="btn btn-warning my-2 my-sm-0" type="submit">+ Add ingredient</button></a>
+                </div>
                 <div class="my-2 ml-4">
                     Hi, {{request.user}}
                 </div>

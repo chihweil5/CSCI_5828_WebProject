@@ -25,9 +25,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/mystock">My Stock</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="/favorite">My Favorite</a>
-                </li>
+                </li> -->
 		{% endif %}
             </ul>
             <!-- <form class="form-inline my-2 my-lg-0">
@@ -42,7 +42,7 @@
                     <a href="/mystock/new" class="top-menu"><button class="btn btn-warning my-2 my-sm-0" type="submit">+ Add ingredient</button></a>
                 </div>
                 <div class="my-2 ml-4">
-			<a href="{% url 'account' request.user %}" >Hi, {{request.user}}</a>
+			        Hi, {{request.user}} <a href="{% url 'account' request.user %}" ><span id='fav'><i class="fas fa-utensils"></i></span></a>
                 </div>
                 <div class="my-2 ml-4">
                     <a href="/logout/" class="top-menu"><button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Log out</button></a>

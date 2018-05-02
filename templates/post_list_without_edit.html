@@ -16,6 +16,9 @@
             <div class="date">
                 {{ post.post_time }}
             </div>
+	    <div>
+		<p> by <a href="{% url 'profilex' post.owner  %}"> {{ post.owner }}</a></p>
+	    </div>
             <h1><a href="{% url 'post_detail_without_edit' pk=post.pk|stringformat:"s" %}">{{ post.title }}</a></h1>
             <p>{{ post.content|linebreaksbr }}</p>
             <hr class="divider" />

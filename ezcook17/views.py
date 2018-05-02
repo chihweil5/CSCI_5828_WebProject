@@ -14,9 +14,30 @@ from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.contrib.auth.views import login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 import uuid
 from datetime import datetime
+
+def get_user_profile(request, username):
+    print(username)
+    user = get_object_or_404(User, username=username)
+    print(user.username)
+    post_list = []
+    if RecipeModel.objects.filter(owner=str(username)):
+        posts = RecipeModel.objects.filter(owner=str(username))
+        # print(posts)
+        for model in posts:
+            post_list.append(model)
+            print(model)
+    post_list.sort(key=lambda post: post.post_time, reverse=True)
+    return render(request, 'user_profile.html', {'profile_user':  user, 'posts': post_list})
+
+def get_user_account(request, username):
+    print(username)
+    user = get_object_or_404(User, username=username)
+    print(user.username)
+    return render(request, 'account.html', {'account':  user})
 
 def login_form(request):
     if request.method == 'POST':

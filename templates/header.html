@@ -42,7 +42,7 @@
                     <a href="/mystock/new" class="top-menu"><button class="btn btn-warning my-2 my-sm-0" type="submit">+ Add ingredient</button></a>
                 </div>
                 <div class="my-2 ml-4">
-                    Hi, {{request.user}}
+			<a href="{% url 'account' request.user %}" >Hi, {{request.user}}</a>
                 </div>
                 <div class="my-2 ml-4">
                     <a href="/logout/" class="top-menu"><button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Log out</button></a>

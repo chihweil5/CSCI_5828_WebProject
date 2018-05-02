@@ -17,4 +17,9 @@ urlpatterns = [
     url(r'^favorite/$', views.favorite_list, name='post_list_without_edit'),
     url(r'^favorite/(?P<pk>(\w+-){4}\w+)/$', views.post_detail_without_edit, name='post_detail_without_edit'),
     # url(r'^ingredient/edit/(?P<name>\w+)/$', views.edit_ingredient, name='edit_ingredient'),
+
+    #url(r'^profile/$', views.get_user_profile, name='profile'),
+    url(r'^profile/(?P<username>[a-zA-Z0-9]+)$', views.get_user_profile, name='profilex'),
+
+    url(r'^account/(?P<username>[a-zA-Z0-9]+)$', views.get_user_account, name='account'),
 ]

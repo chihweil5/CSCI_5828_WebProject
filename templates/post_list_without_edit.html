@@ -11,6 +11,7 @@
             <input type="search" class="form-control" id="search" placeholder="Filter recipes...">
         </div>
     </div>
+    <div id="list">
     {% for post in posts %}
         <div class="post">
             <div class="date">
@@ -20,18 +21,55 @@
             <p>{{ post.content|linebreaksbr }}</p>
             <hr class="divider" />
         </div>
-        <script>
-        $(function() {
-            $('#search').on('keyup', function() {
-                var pattern = $(this).val();
-                $('.post').hide();
-                $('.post').filter(function() {
-                    return $(this).text().match(new RegExp(pattern, 'i'));
-                }).show();
-            });
-        });
-        </script>
     {% endfor %}
+    </div>
+
+    <script>
+    $(function() {
+        $('#search').on('keyup', function() {
+            var pattern = $(this).val();
+            $('.post').hide();
+            $('.post').filter(function() {
+                return $(this).text().match(new RegExp(pattern, 'i'));
+            }).show();
+        });
+    });
+    </script>
+    <script>
+    function ajaxCall() {
+        $.ajax({
+        type: 'GET',
+        url: window.location.href,
+        success: function(posts_str){
+            console.log(posts_str);
+            posts_json = JSON.parse(posts_str)
+            html = '';
+            for(var count in posts_json){
+                date = new Date(posts_json[count].post_time).toString().split(" ");
+                hr = new Date(posts_json[count].post_time).getHours();
+                min = date[4].split(":")[1]
+                noon = 'a.m.';
+                if(hr > 12){
+                    hr -= 12;
+                    noon = 'p.m.';
+                }
+                newdate = `${date[1]} ${parseInt(date[2]).toString()}, ${date[3]}, ${hr}:${min} ${noon}`;
+                html+=`<div class="post">
+                    <div class="date">
+                        ${newdate}
+                    </div>
+                    <h1><a href="${posts_json[count].id}">${ posts_json[count].title}</a></h1>
+                    <p>${posts_json[count].content}</p>
+                    <hr class="divider" />
+                </div>`
+            }
+            $('#list').html(html);
+        }
+      });
+    }
+
+    setInterval(ajaxCall, 2000);
+    </script>
 
 </div>
 {% endblock %}

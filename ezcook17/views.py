@@ -17,6 +17,25 @@ from django.contrib.auth.forms import AuthenticationForm
 
 import uuid
 from datetime import datetime
+import json
+import thread
+import urllib, wget, requests
+
+def write_file(pk):
+    # print(pk)
+    post = get_object_or_404(RecipeModel, id=uuid.UUID(pk))
+    title = post.title.replace(" ","_")
+    with open(title+'.txt', 'w+') as f:
+        f.write('Title: {}, Description: {}, Author: {}'.format(post.title, post.content, post.owner))
+    testfile = urllib.URLopener()
+    testfile.retrieve("{}.txt".format(title), "test.txt")
+    # wget.download("{}.txt".format(title))
+    # requests.get("http://img0.pclady.com.cn/pclady/pet/choice/dog/1701/7.jpg")
+
+def download(request, pk):
+    thread.start_new_thread(write_file, (pk, ))
+    return redirect('post_detail_without_edit', pk=pk)
+
 
 def login_form(request):
     if request.method == 'POST':
@@ -58,11 +77,24 @@ def post_list_without_edit(request):
         post_list.append(model)
         print(model)
     post_list.sort(key=lambda post: post.post_time, reverse=True)
-    return render(request, 'post_list_without_edit.html', {'posts': post_list})
-#
+    data = {}
+    count = 1
+    for i in post_list:
+        tmp = {}
+        tmp['id'] = str(i.id)
+        tmp['post_time'] = i.post_time.strftime('%Y-%m-%dT%H:%M:%S')
+        tmp['title'] = i.title
+        tmp['content'] = i.content
+        data[str(count)] = tmp
+        count+=1
+    print(json)
+    if request.is_ajax():
+        return HttpResponse(json.dumps(data))
+    else:
+        return render(request, 'post_list_without_edit.html', {'posts': post_list})
+
 def post_detail_without_edit(request, pk):
     post = get_object_or_404(RecipeModel, id=uuid.UUID(pk))
-
     if UserModel.objects.filter(username=str(request.user)):
         user = UserModel.objects.filter(username=str(request.user)).get()
         user_ingred = user.stock

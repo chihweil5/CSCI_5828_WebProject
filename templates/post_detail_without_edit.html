@@ -94,7 +94,10 @@ $('#download').on("click", function(){
     $('#circle').css('visibility', 'visible');
 });
 
-// setInterval(ajaxCall, 2000);
+function hide() {
+    $('#circle').css('visibility', 'hidden');
+}
+setInterval(hide, 1500);
 </script>
 
 {% endblock %}

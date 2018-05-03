@@ -19,8 +19,8 @@ from django.contrib.auth.models import User
 import uuid
 from datetime import datetime
 import json
-import thread
-import urllib, wget, requests
+# import thread
+import requests
 import os
 from django.conf import settings
 from django.http import HttpResponse
@@ -40,7 +40,8 @@ def write_file(pk):
         with open(file_path, 'rb') as fh:
             print('hi2')
             response = HttpResponse(fh.read(), content_type="application/text")
-            response['Content-Disposition'] = 'inline; filename=' + os.path.basename("test.txt")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename("{}.txt".format(title)
+)
             return response
     raise Http404
 
@@ -91,7 +92,7 @@ def signup(request):
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user_model = UserModel.objects.create(username=username, password=raw_password)
+            user_model = UserModel.objects.create(id = uuid.uuid1(), username=username, password=raw_password)
             user = authenticate(username=username, password=raw_password)
             login(request, user)
             return redirect('post_list_without_edit')

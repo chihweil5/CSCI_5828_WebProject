@@ -21,21 +21,33 @@ from datetime import datetime
 import json
 import thread
 import urllib, wget, requests
+import os
+from django.conf import settings
+from django.http import HttpResponse
+
 
 def write_file(pk):
-    # print(pk)
     post = get_object_or_404(RecipeModel, id=uuid.UUID(pk))
     title = post.title.replace(" ","_")
-    with open(title+'.txt', 'w+') as f:
+    with open("{}.txt".format(title), 'w+') as f:
         f.write('Title: {}, Description: {}, Author: {}'.format(post.title, post.content, post.owner))
-    testfile = urllib.URLopener()
-    testfile.retrieve("{}.txt".format(title), "test.txt")
-    # wget.download("{}.txt".format(title))
-    # requests.get("http://img0.pclady.com.cn/pclady/pet/choice/dog/1701/7.jpg")
+    # testfile = urllib.URLopener()
+    # testfile.retrieve("{}.txt".format(title), "{}.txt".format(title))
+    file_path = os.path.join(settings.MEDIA_ROOT, "{}.txt".format(title))
+    print(file_path)
+    if os.path.exists(file_path):
+        print('hi')
+        with open(file_path, 'rb') as fh:
+            print('hi2')
+            response = HttpResponse(fh.read(), content_type="application/text")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename("test.txt")
+            return response
+    raise Http404
 
 def download(request, pk):
-    thread.start_new_thread(write_file, (pk, ))
-    return redirect('post_detail_without_edit', pk=pk)
+    # thread.start_new_thread(write_file, (pk, ))
+    # return redirect('post_detail_without_edit', pk=pk)
+    return write_file(pk)
 
 
 def get_user_profile(request, username):

@@ -37,7 +37,7 @@ $ python3 manage.py migrate
 $ python3 manage.py runserver
 ```
 
-### Demo vedio
+### Demo Video
 
 [here](https://drive.google.com/file/d/1AwAeh5aVkTfJhloxXoNhG9UnWzMZ1HM3/view?usp=sharing)
 

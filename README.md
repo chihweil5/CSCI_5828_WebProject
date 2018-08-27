@@ -37,8 +37,7 @@ $ python3 manage.py migrate
 $ python3 manage.py runserver
 ```
 
-### The public link for this website
-http://ec2-18-188-178-199.us-east-2.compute.amazonaws.com:8080/home/
+### Demo vedio
 
-Our Final Presentation slide in [here](https://docs.google.com/presentation/d/1rhUF6xPapdNi7tXPnt2-WC6IUncK8Pmji1Rsw6t2hvQ/edit#slide=id.g3928e3aff2_0_112).
-Pivotal tracker link is [this](https://www.pivotaltracker.com/n/projects/2166399).
+[here](https://drive.google.com/file/d/1AwAeh5aVkTfJhloxXoNhG9UnWzMZ1HM3/view?usp=sharing)
+
